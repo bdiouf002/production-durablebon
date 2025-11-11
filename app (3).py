@@ -1,22 +1,23 @@
-import pandas as pd
+
 import streamlit as st
+import pandas as pd
 
-# Specify the path to your file
-file_path = "Données.xlsx"
+st.title("📊 Tableau de bord - Production durable")
 
-st.title("Données de Production Durable")
-
+# Lecture du fichier de données
 try:
-    # Read all sheets from the Excel file into a dictionary of DataFrames
-    excel_data = pd.read_excel(file_path, sheet_name=None)
+    df = pd.read_excel("Données.xlsx")
+    st.success("✅ Fichier 'Données.xlsx' chargé avec succès !")
 
-    st.write("Onglets disponibles et aperçu des données :")
-    # Iterate through the dictionary and display each DataFrame
-    for sheet_name, df in excel_data.items():
-        st.header(f"Onglet : {sheet_name}")
-        st.dataframe(df)
+    # Afficher un aperçu
+    st.subheader("Aperçu des données :")
+    st.dataframe(df.head())
+
+    # Quelques statistiques simples
+    st.subheader("📈 Statistiques descriptives :")
+    st.write(df.describe())
 
 except FileNotFoundError:
-    st.error(f"Error: File not found at {file_path}")
+    st.error("❌ Le fichier 'Données.xlsx' est introuvable dans le dépôt GitHub.")
 except Exception as e:
-    st.error(f"An error occurred: {e}")
+    st.error(f"⚠️ Une erreur est survenue lors du chargement : {e}")
